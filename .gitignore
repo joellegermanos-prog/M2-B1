@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.pytest_cache/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Données potentiellement lourdes — formatrice fournit les CSV via Discord,
+# l'apprenant les place dans data/ sans les commiter
+data/*.csv
+data/*.parquet
+!data/.gitkeep
+
+# Artefacts produits
+*.joblib
