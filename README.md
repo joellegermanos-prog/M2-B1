@@ -27,9 +27,10 @@ jupyter notebook notebooks/M2-B1_template.ipynb       # → s'ouvre dans le navi
 
 Si ces 4 commandes marchent, ton poste est prêt.
 
-> ⚠️ Le dataset `german_credit_raw.csv` te sera fourni mardi 9h par la
-> formatrice (Discord). Place-le dans `data/`. Le `.gitignore` exclut
-> `data/*.csv` du commit — ne te casse pas la tête.
+> 📦 Le dataset `german_credit_raw.csv` est **déjà dans `data/`** (livré avec
+> le template). Le `.gitignore` versionne ce CSV brut d'entrée mais exclut
+> les sorties que tu produis (`*.parquet`, pipeline `.joblib`) — ne te casse
+> pas la tête.
 
 ---
 
@@ -38,8 +39,11 @@ Si ces 4 commandes marchent, ton poste est prêt.
 ```
 M2-B1-pipe-eckmuhl-<prenom>/
 ├── data/
-│   ├── german_credit_raw.csv          # fourni mardi (gitignored)
-│   └── german_credit_clean.parquet    # produit en tâche 6 (gitignored)
+│   ├── german_credit_raw.csv          # fourni avec le template (versionné)
+│   ├── german_credit_supplement.csv   # fourni — complément customer_segment (tâche 5 bis)
+│   └── german_credit_clean.parquet    # produit en bonus (gitignored)
+├── scripts/
+│   └── generate_supplement.py         # (repro) régénère le complément, seed 42
 ├── notebooks/
 │   └── M2-B1_template.ipynb           # à dupliquer en M2-B1_<prenom>_audit.ipynb
 ├── src/
@@ -81,13 +85,32 @@ Cf. [`./ressources/README.md`](./ressources/README.md) pour l'ordre de mobilisat
 
 ## 🧭 Démarche attendue
 
+### 🎯 Socle — à terminer par tout le monde (valide C2 + C3)
+
 1. **Découverte** (30 min) — charge le CSV, repère cible + variables sensibles
 2. **Audit qualité** (1 h) — manquants, outliers, 4 visualisations
 3. **Audit éthique** (1 h) — disparate impact sur 2+ variables sensibles
 4. **Choix prétraitement** (30 min) — remplis les listes dans `preprocess.py`
 5. **Industrialisation** (1 h 15) — `Pipeline` + `ColumnTransformer`, persisté
-6. **Parquet + datasheet** (45 min) — sauve propre, complète `datasheet.md`
-7. **Synthèse** (30 min) — complète `audit.md` (verdict + recommandations)
+5 bis. **Adapter** (20 min) — un complément `customer_segment` arrive :
+   intègre-le au pipeline et justifie ton choix d'encodage (geste C3 N2)
+6. **Synthèse** (30 min) — complète `audit.md` (verdict DPO + recommandations)
+
+> 🔎 **Auto-vérification** : une fois `src/pipeline.joblib` produit (tâches 5 et
+> 5 bis), lance `python contract_test.py` pour valider ton pipeline (lignes
+> préservées, aucun NaN après imputation, déterminisme, nombre de colonnes
+> figé). Renseigne d'abord `expected_n_features` comme indiqué dans le fichier.
+
+### ⭐ Extensions — seulement si le socle est propre
+
+7. **Parquet + réflexe stockage** (~10 min) — sauve en `.parquet`, justifie
+   le choix (vs CSV, vs PostgreSQL)
+8. **Datasheet Gebru** (~30 min) — premier jet de `datasheet.md` (la version
+   complète, c'est mercredi en M2-B2)
+9. **Fairlearn** — recalcule tes DI avec `MetricFrame`
+
+> ⚠️ N'entame pas les extensions avant d'avoir un socle solide. Mieux vaut un
+> socle nickel qu'un bonus bâclé.
 
 → Compétences visées : **C2 — imiter** + **C3 — imiter puis adapter**.
 
@@ -107,8 +130,8 @@ Cf. [`./ressources/README.md`](./ressources/README.md) pour l'ordre de mobilisat
 
 1. Relis le mini-cours correspondant à ta tâche actuelle (cf.
    [`./ressources/README.md`](./ressources/README.md)).
-2. Vérifie que `german_credit_raw.csv` est bien dans `data/` (sinon le
-   notebook plante au chargement).
+2. Vérifie que `german_credit_raw.csv` est bien dans `data/` (livré avec le
+   template — il doit y être dès le clone).
 3. Si tu butes sur **`ColumnTransformer`** : prends 10 min pour faire un
    exemple ultra-minimal en console (1 numérique + 1 catégorielle), puis
    remonte vers ton vrai dataset.
