@@ -61,6 +61,28 @@ On le retrouvera en M5 (intégration en service) et M6 (réentraînement).
   `fit_transform` est optimisé. En production tu fais `fit` une fois sur le
   train, puis `transform` sur tous les nouveaux lots.
 
+## Vue mentale : ce que fait le `ColumnTransformer`
+
+Beaucoup d'apprenants peinent à visualiser ce qui se passe. L'image à
+retenir : **chaque famille de colonnes passe dans _son propre_ sous-pipeline**,
+puis tout est recollé horizontalement en **une seule matrice** :
+
+```
+                       ┌──────────────────────┐
+  colonnes num ──────► │  impute + scale      │──┐
+                       └──────────────────────┘  │
+                       ┌──────────────────────┐  │   ColumnTransformer
+  colonnes ord ──────► │  impute + ordinal    │──┼──► (concat horizontal) ──► matrice
+                       └──────────────────────┘  │                            finale
+                       ┌──────────────────────┐  │
+  colonnes cat ──────► │  impute + one-hot    │──┘
+                       └──────────────────────┘
+```
+
+Retiens : **1 branche = 1 famille de colonnes = 1 traitement**. Le
+`ColumnTransformer` ne fait que **router** chaque colonne vers le bon
+sous-pipeline, puis **recoller** les sorties côte à côte.
+
 ## Exemple minimal qui tourne
 
 ```python
@@ -158,6 +180,26 @@ out = pipe.transform(df.head(10))
 assert out.shape[0] == 10, "Reload broken"
 print(f"OK — output shape {out.shape}")
 ```
+
+## Et si une nouvelle variable arrive ? (geste « adapter »)
+
+C'est tout l'intérêt d'un `ColumnTransformer` : **tu n'as pas à tout réécrire**.
+Quand une colonne imprévue arrive (cf. tâche 5 bis, `customer_segment`), la
+démarche tient en 3 questions :
+
+1. **Quelle est sa nature ?** Numérique → `NUMERIC_FEATURES`. Catégorielle
+   **ordonnée** (des tiers, des niveaux) → `ORDINAL_FEATURES` avec l'ordre
+   explicite. Catégorielle **non ordonnée** → `CATEGORICAL_FEATURES` (OneHot).
+2. **À quel branch je la rattache ?** Tu l'ajoutes à la bonne liste : elle
+   hérite automatiquement de l'imputation + l'encodage de ce branch. Ses
+   manquants sont gérés par l'imputer du branch (pas besoin d'y penser deux fois).
+3. **Combien de colonnes en sortie ?** Ordinal → **+1 colonne**. OneHot →
+   **+1 colonne par modalité**. Re-`fit` et vérifie la nouvelle shape.
+
+> ⚠️ Le piège : mettre une variable **ordonnée** (`basic < plus < premium <
+> private`) en OneHot → tu **perds l'ordre**. Si tu choisis quand même OneHot,
+> assume-le et explique pourquoi (parfois l'ordre n'est pas pertinent pour la
+> cible — mais c'est un choix à argumenter, pas un défaut).
 
 ## Pièges fréquents
 

@@ -24,7 +24,7 @@ Dernière vérification : 2026-05-25
 
 - **Gebru et al. (2018) — *Datasheets for Datasets*** : <https://arxiv.org/abs/1803.09010>
   - PDF court, lisible — le standard pour la datasheet.
-- **Mitchell et al. (2019) — *Model Cards for Model Reporting*** : <https://arxiv.org/abs/1810.03677>
+- **Mitchell et al. (2019) — *Model Cards for Model Reporting*** : <https://arxiv.org/abs/1810.03993>
   - À garder en tête pour M7 (l'équivalent côté modèle).
 - **Barocas, Hardt, Narayanan — *Fairness and Machine Learning*** : <https://fairmlbook.org/>
   - Livre gratuit en ligne. Chapitres 1-2 pour le contexte du

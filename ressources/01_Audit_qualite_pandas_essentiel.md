@@ -28,6 +28,13 @@ quand on industrialise une vérification continue (M5+).
 
 ## Concepts clés
 
+- **Identifier les familles de variables** : avant tout le reste,
+  `df.dtypes` donne le type de chaque colonne, et
+  `df.select_dtypes(include="number")` / `select_dtypes(include="object")`
+  séparent numériques et catégorielles. Trier les colonnes en familles
+  (**numérique / catégorielle / ordinale / date / booléenne**) est le **geste
+  préalable au `ColumnTransformer`** (mini-cours 03) : on ne traite pas une
+  date comme un nombre, ni une ordinale comme une nominale.
 - **`df.info()`** : aperçu rapide des types et du nombre de non-nuls par
   colonne. Première chose à regarder après `read_csv`.
 - **`df.describe(include="all")`** : stats descriptives. Avec `include="all"`,

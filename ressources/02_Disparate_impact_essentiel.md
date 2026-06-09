@@ -53,6 +53,12 @@ de discrimination indirecte à investiguer.
     ne veut pas dire qu'il n'y a pas de biais — la règle est un seuil
     grossier, à compléter par d'autres mesures en M7)
 
+> ⚠️ **Le DI est calculé ici sur des données _historiques_.** Il ne prouve
+> **pas** qu'un futur modèle sera discriminant : il indique seulement que les
+> données reflètent **déjà** des disparités qu'il faudra **surveiller**.
+> Confondre « biais dans les données » et « modèle discriminant » est l'erreur
+> la plus fréquente à ce stade. En M2 on **alerte**, on ne **conclut** pas.
+
 ## Exemple minimal qui tourne
 
 ```python
@@ -71,18 +77,18 @@ selection_rate = df.groupby(groupe)["credit_risk"].apply(
 print(selection_rate)
 # foreign_worker
 # no     0.892   ← non-étrangers
-# yes    0.668   ← étrangers (minoritaire en termes de bon score)
+# yes    0.693   ← étrangers (minoritaire en termes de bon score)
 
 # Le groupe minoritaire est celui avec le SR le plus bas
 sr_min = selection_rate.min()
 sr_max = selection_rate.max()
 di = sr_min / sr_max
-print(f"DI = {di:.3f}")  # → 0.749
+print(f"DI = {di:.3f}")  # → 0.777
 print(f"Verdict 4/5 : {'⚠️ signal (DI < 0.8)' if di < 0.8 else '✅ OK'}")
 ```
 
-Verdict : **DI = 0.75 < 0.80** → les travailleurs étrangers sont environ
-**25 % moins susceptibles** d'être classés `good_credit`. À documenter,
+Verdict : **DI = 0.777 < 0.80** → les travailleurs étrangers sont environ
+**22 % moins susceptibles** d'être classés `good_credit`. À documenter,
 à alerter le DPO. Pas à mitiger ici (c'est M7).
 
 ## Exercice guidé
@@ -109,8 +115,8 @@ print(f"DI sex = {di:.3f}")
 
 **Solution attendue** (verdicts approximatifs) :
 
-- `foreign_worker` : DI ~0.75 → **signal**
-- `sex_binary` : DI ~0.91 → **pas de signal au sens 4/5** (mais la
+- `foreign_worker` : DI ~0.78 → **signal**
+- `sex_binary` : DI ~0.90 → **pas de signal au sens 4/5** (mais la
   composition `personal_status_sex` mélange genre et statut civil — bug de
   conception à signaler dans l'audit éthique)
 

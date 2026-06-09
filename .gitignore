@@ -15,11 +15,13 @@ Thumbs.db
 .idea/
 *.swp
 
-# Données potentiellement lourdes — formatrice fournit les CSV via Discord,
-# l'apprenant les place dans data/ sans les commiter
+# Données : le CSV brut d'entrée est versionné (input du brief), les sorties
+# produites par l'apprenant (parquet propre) restent hors commit.
 data/*.csv
 data/*.parquet
 !data/.gitkeep
+!data/german_credit_raw.csv
+!data/german_credit_supplement.csv
 
 # Artefacts produits
 *.joblib

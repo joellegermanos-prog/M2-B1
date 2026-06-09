@@ -6,6 +6,12 @@
 
 ## Pourquoi cette techno ?
 
+> 📅 **Mars 2027. Tu quittes FastIA.** Un nouveau consultant récupère ton
+> dataset. Il ne sait pas d'où viennent les données, quelles colonnes sont
+> sensibles, ni quelles transformations tu as appliquées. Il repart de zéro —
+> ou pire, il bâtit un modèle sur des données qu'il ne comprend pas. **La
+> datasheet sert exactement à éviter ça.**
+
 Une **datasheet de dataset** est l'équivalent, pour des données, d'une
 fiche technique de composant électronique : elle accompagne le dataset et
 **permet à un utilisateur tiers** (data scientist, DPO, juriste, métier)
@@ -32,7 +38,7 @@ Datasets* — paper Google fondateur. Format adopté par Hugging Face
 | **Model Card (Mitchell 2019)** | Pour documenter un **modèle**, pas un dataset — équivalent côté modèle, central en M7 |
 | **W3C Dataset Description** (DCAT) | Standard sémantique web pour catalogues de datasets ouverts — overkill ici |
 
-## Les 7 sections Gebru (version courte M2)
+## Concepts clés — les 7 sections Gebru (version courte M2)
 
 ### 1. **Motivation**
 Pourquoi ce dataset existe ? Qui l'a créé ? Pour quel objectif initial ?
@@ -165,7 +171,7 @@ contient au minimum :
 - **AI Act européen (2024)** — exige une documentation des données
   d'entraînement pour les systèmes à haut risque. Datasheet ≈ format
   pré-compatible.
-- **Model Cards (Mitchell et al. 2019)** — [paper original](https://arxiv.org/abs/1810.03677)
+- **Model Cards (Mitchell et al. 2019)** — [paper original](https://arxiv.org/abs/1810.03993)
   — l'équivalent côté modèle. À garder en tête pour M7.
 
 ## Vérification (checklist apprenant)

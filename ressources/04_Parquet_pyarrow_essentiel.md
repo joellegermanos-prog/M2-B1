@@ -85,6 +85,12 @@ print(f"Ratio compression : {csv_size / pq_size:.1f}x")
 Sur German Credit, tu obtiens typiquement **CSV ~80 Ko → Parquet ~25 Ko**
 (ratio ~3x). Sur des volumes plus gros (M3), tu verras 10-20x.
 
+> 💡 **« Pourquoi s'embêter avec pyarrow pour un CSV de 80 Ko ? »** En M2, le
+> gain de performance est **invisible** — c'est normal, le dataset est minuscule.
+> On apprend Parquet **maintenant** parce qu'il devient le format **standard dès
+> M3**, et la norme en M5/M6. Tu installes le réflexe **avant** d'en avoir besoin
+> sur de gros volumes, pas le jour où ça coince.
+
 ## Exercice guidé
 
 1. Sauvegarde ton dataset propre (post-imputation ou tel que post-EDA, à toi)
