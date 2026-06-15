@@ -142,9 +142,9 @@ print(f"DI sex = {di:.3f}")
 
 ## Pour aller plus loin
 
-- **EEOC original 4/5 rule** : [Section 1607.4D](https://www.eeoc.gov/laws/regulations/29cfr1607.cfm)
-  (texte légal US, courte et claire)
-- **Fairlearn** : [User Guide — Disparity metrics](https://fairlearn.org/main/user_guide/assessment/disparity_metrics.html)
+- **EEOC — 4/5 rule** : [Employment Tests & Selection Procedures](https://www.eeoc.gov/laws/guidance/employment-tests-and-selection-procedures)
+  (source US de la règle des 4/5)
+- **Fairlearn** : [User Guide — Common fairness metrics](https://fairlearn.org/main/user_guide/assessment/common_fairness_metrics.html)
   (équivalents Fairlearn du calcul Pandas)
 - **Mitchell et al. — *Model Cards for Model Reporting*** (2019) — préfigure
   M7, en lien avec datasheet Gebru

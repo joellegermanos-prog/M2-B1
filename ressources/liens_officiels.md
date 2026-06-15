@@ -1,6 +1,6 @@
 # Liens officiels — M2-B1
 
-Dernière vérification : 2026-05-25
+Dernière vérification : 2026-06-10
 
 ## Documentation officielle
 
@@ -34,8 +34,8 @@ Dernière vérification : 2026-05-25
 
 - **CNIL — IA et données personnelles** : <https://www.cnil.fr/fr/intelligence-artificielle/ia-comment-etre-en-conformite-avec-le-rgpd>
   - Référentiel français RGPD appliqué à l'IA.
-- **EEOC (US) — Section 1607.4D (règle des 4/5)** : <https://www.eeoc.gov/laws/regulations/29cfr1607.cfm>
-  - Texte légal d'origine de la règle 4/5.
+- **EEOC (US) — Employment Tests & Selection Procedures (règle des 4/5)** : <https://www.eeoc.gov/laws/guidance/employment-tests-and-selection-procedures>
+  - Source de la règle des 4/5 (four-fifths rule).
 - **AI Act européen** : <https://artificialintelligenceact.eu/the-act/>
   - Le texte de référence — sections sur les obligations de documentation
     pour les systèmes à haut risque.
