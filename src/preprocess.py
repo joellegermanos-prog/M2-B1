@@ -30,14 +30,50 @@ from sklearn.preprocessing import OneHotEncoder, OrdinalEncoder, StandardScaler
 
 NUMERIC_FEATURES: list[str] = [
     # ex. "duration_months", "credit_amount", "age", ...
+    "duration_months",               # Durée du crédit (Asymétrie haute, requiert scaling)
+    "credit_amount",                 # Montant du crédit (Outliers massifs détectés à l'EDA)
+    "installment_rate_pct_income",   # Taux d'effort (Pourcentage du revenu disponible)
+    "residence_since_years",         # Ancienneté dans le logement actuel
+    "n_existing_credits",            # Nombre de crédits en cours dans cette banque
+    "n_people_liable",               # Nombre de personnes à charge financièrement
 ]
 ORDINAL_FEATURES: dict[str, list[str]] = {
     # ex. "savings_account": ["< 100 DM", "100-500 DM", "500-1000 DM",
     #                         ">= 1000 DM", "unknown / no savings"],
     # Note : l'ordre des modalités encode la sémantique.
+    # L'ordre logique va du risque le plus élevé (ou niveau le plus faible) vers le plus sûr
+    "checking_account_status": [
+        "no checking account", 
+        "< 0 DM", 
+        "0 <= ... < 200 DM", 
+        ">= 200 DM / salary assignments for at least 1 year"
+    ],
+    "savings_account": [
+        "unknown / no savings account", 
+        "< 100 DM", 
+        "100 <= ... < 500 DM", 
+        "500 <= ... < 1000 DM", 
+        ">= 1000 DM"
+    ],
+    "employment_since": [
+        "unemployed", 
+        "< 1 year", 
+        "1 <= ... < 4 years", 
+        "4 <= ... < 7 years", 
+        ">= 7 years"
+    ],
+
 }
 CATEGORICAL_FEATURES: list[str] = [
     # ex. "purpose", "housing", "telephone", ...
+    "credit_history",            # Passé bancaire (ex: credits paid back duly, critical...)
+    "purpose",                   # Objet du crédit (ex: car, radio/TV, furniture...)
+    "other_debtors",             # Co-débiteurs ou garants (ex: none, co-applicant...)
+    "property",                  # Patrimoine possédé (ex: real estate, car...)
+    "other_installment_plans",   # Autres crédits en cours (ex: bank, stores, none)
+    "housing",                   # Type de logement (ex: rent, own, for free)
+    "job",                       # Catégorie socio-professionnelle (ex: skilled, unskilled...)
+    "telephone",                 # Possède un téléphone fixe enregistré (yes/no)
 ]
 TARGET_COLUMN: str = "credit_risk"
 TARGET_MAPPING: dict[str, int] = {"good_credit": 0, "bad_credit": 1}
@@ -57,6 +93,21 @@ def load_dataset(path: Path) -> tuple[pd.DataFrame, pd.Series]:
     # nature (numérique / ordinale / nominale ?) et ajoute-la à la BONNE liste
     # de features ci-dessus. N'oublie pas ses ~4 % de manquants.
     # (À toi de trouver comment charger et joindre ce complément — c'est le geste « adapter ».)
+    supplement_path = path.parent / "german_credit_supplement.csv"
+    if supplement_path.exists():
+        df_supp = pd.read_csv(supplement_path)
+        # Jonction par position (on réinitialise les index pour garantir l'alignement)
+        df = df.reset_index(drop=True).join(df_supp.reset_index(drop=True))
+        
+        # Injection dynamique de la nouvelle feature dans le dictionnaire ordinal
+        # (Si elle n'y figure pas déjà)
+        if "customer_segment" not in ORDINAL_FEATURES:
+            ORDINAL_FEATURES["customer_segment"] = ["Bronze", "Silver", "Gold"] 
+            # Note : Ajuste la liste ci-dessus selon les modalités réelles observées dans le CSV !
+    else:
+        print(f"⚠️ Fichier supplément absent à l'adresse : {supplement_path}")
+    
+    
     y = df[TARGET_COLUMN].map(TARGET_MAPPING)
     if y.isna().any():
         unknown = df.loc[y.isna(), TARGET_COLUMN].unique().tolist()
