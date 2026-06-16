@@ -56,8 +56,7 @@ def load_dataset(path: Path) -> tuple[pd.DataFrame, pd.Series]:
     # même ordre de lignes). Charge-le, joins-le ici par position, décide de sa
     # nature (numérique / ordinale / nominale ?) et ajoute-la à la BONNE liste
     # de features ci-dessus. N'oublie pas ses ~4 % de manquants.
-    # supp = pd.read_csv(path.with_name("german_credit_supplement.csv"))
-    # df = pd.concat([df, supp], axis=1)
+    # (À toi de trouver comment charger et joindre ce complément — c'est le geste « adapter ».)
     y = df[TARGET_COLUMN].map(TARGET_MAPPING)
     if y.isna().any():
         unknown = df.loc[y.isna(), TARGET_COLUMN].unique().tolist()
