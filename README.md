@@ -63,6 +63,19 @@ M2-B1-pipe-eckmuhl-<prenom>/
 ├── .gitignore
 └── README.md (ce fichier — à compléter)
 ```
+##  Execution
+
+```bash
+# 1. Générer et entraîner le pipeline (ColumnTransformer + Encodages)
+# Cela va créer le fichier src/pipeline.joblib requis pour la production
+python src/preprocess.py
+
+# 2. Exécuter le Test
+# cela va avoir comme output: ontract test OK — 5 lignes préservées, <nbr> colonnes en sortie, aucun NaN, transformation déterministe.
+pytest -v contract_test.py
+
+# Alternative (exécution en script Python standard) :
+# python contract_test.py
 
 ---
 
