@@ -34,6 +34,7 @@ NUMERIC_FEATURES: list[str] = [
     "credit_amount",                 # Montant du crédit (Outliers massifs détectés à l'EDA)
     "installment_rate_pct_income",   # Taux d'effort (Pourcentage du revenu disponible)
     "residence_since_years",         # Ancienneté dans le logement actuel
+    "age",                           # Âge du client
     "n_existing_credits",            # Nombre de crédits en cours dans cette banque
     "n_people_liable",               # Nombre de personnes à charge financièrement
 ]
@@ -62,19 +63,28 @@ ORDINAL_FEATURES: dict[str, list[str]] = {
         "4 <= ... < 7 years", 
         ">= 7 years"
     ],
+    "customer_segment": [
+        "basic", 
+        "plus", 
+        "premium", 
+        "private"
+    ]
 
 }
 CATEGORICAL_FEATURES: list[str] = [
     # ex. "purpose", "housing", "telephone", ...
     "credit_history",            # Passé bancaire (ex: credits paid back duly, critical...)
     "purpose",                   # Objet du crédit (ex: car, radio/TV, furniture...)
+    "personal_status_sex",       # Statut marital et sexe (ex:Male Single, Married, etc.)
     "other_debtors",             # Co-débiteurs ou garants (ex: none, co-applicant...)
     "property",                  # Patrimoine possédé (ex: real estate, car...)
     "other_installment_plans",   # Autres crédits en cours (ex: bank, stores, none)
     "housing",                   # Type de logement (ex: rent, own, for free)
     "job",                       # Catégorie socio-professionnelle (ex: skilled, unskilled...)
     "telephone",                 # Possède un téléphone fixe enregistré (yes/no)
+    "foreign_worker"             # Travailleurs étrangers
 ]
+
 TARGET_COLUMN: str = "credit_risk"
 TARGET_MAPPING: dict[str, int] = {"good_credit": 0, "bad_credit": 1}
 
@@ -101,8 +111,8 @@ def load_dataset(path: Path) -> tuple[pd.DataFrame, pd.Series]:
         
         # Injection dynamique de la nouvelle feature dans le dictionnaire ordinal
         # (Si elle n'y figure pas déjà)
-        if "customer_segment" not in ORDINAL_FEATURES:
-            ORDINAL_FEATURES["customer_segment"] = ["Bronze", "Silver", "Gold"] 
+        #if "customer_segment" not in ORDINAL_FEATURES:
+        #    ORDINAL_FEATURES["customer_segment"] = ["basic", "plus", "premium", "private"] 
             # Note : Ajuste la liste ci-dessus selon les modalités réelles observées dans le CSV !
     else:
         print(f"⚠️ Fichier supplément absent à l'adresse : {supplement_path}")
