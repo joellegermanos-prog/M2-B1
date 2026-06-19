@@ -29,6 +29,7 @@ MODEL_PATH = Path(__file__).parent / "src" / "pipeline.joblib"
 DATA_PATH = Path(__file__).parent / "data" / "german_credit_raw.csv"
 
 
+
 def _to_dense(matrix) -> np.ndarray:
     """Convertit une sortie éventuellement creuse (OneHotEncoder) en array dense."""
     return matrix.toarray() if hasattr(matrix, "toarray") else np.asarray(matrix)
@@ -52,6 +53,8 @@ def contract_test_pipeline(
     n_in = len(x_sample)
     pipeline = joblib.load(model_path)
 
+ 
+    
     out = _to_dense(pipeline.transform(x_sample))
 
     assert out.ndim == 2, f"sortie non 2D : ndim={out.ndim}"
@@ -98,7 +101,7 @@ if __name__ == "__main__":
     #    +1 colonne si tu l'encodes en ordinal, +k colonnes si tu l'encodes
     #    en one-hot. C'est exactement ce que ce test fige.
 
-    expected_n_features: int | None = None  # ← reporte ici la valeur de ton notebook
+    expected_n_features: int | None = 51  # ← reporte ici la valeur de ton notebook
 
     if expected_n_features is None:
         raise NotImplementedError(
@@ -107,4 +110,6 @@ if __name__ == "__main__":
         )
 
     X, _y = load_dataset(DATA_PATH)
+
+ 
     contract_test_pipeline(MODEL_PATH, X.head(5), expected_n_features=expected_n_features)
